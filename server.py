@@ -38,9 +38,6 @@ def available_rooms():
 
 @app.route('/used_rooms_list/', methods=['GET'])
 def used_rooms_list():
-    # used = []
-    # for i in range(0, 11):
-    #     if i in
     return make_response(jsonify({'Used Room List': json.dumps(list(used_rooms))}), 400)
 
 
