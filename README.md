@@ -19,6 +19,12 @@ If game ends, there can be a new game on the same room id, else the room id is f
 c. *Quit Game-* 
 Call end_game api.
 
+d. *Replay Game-*
+Call replay api, effectively resetting the board.
+
+**NOTE-** 
+Only Player 1, who has created the room.
+
 
 
 **File Description**
