@@ -22,8 +22,11 @@ user_input = [[1, -1, -1], [0, 1, 0], [0, -1, 1]]
 # b.print_board()
 # print(b.check_state())
 
-b = Board(user_input)
+b = Board()
+b.set_board(user_input)
+b.print_board()
 print(b.check_state())
+
 
 
 

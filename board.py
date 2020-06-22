@@ -2,11 +2,14 @@ class Board:
     def __init__(self):
         self.arr = [[-1 for i in range(3)] for j in range(3)]
 
-    def __init__(self, state):
+    def set_board(self, state):
         self.arr = [[-1 for i in range(3)] for j in range(3)]
         for i in range(0, 3):
             for j in range(0, 3):
                 self.arr[i][j] = state[i][j]
+
+    def get_board(self):
+        return self.arr
 
     def print_board(self):
         print(self.arr)
