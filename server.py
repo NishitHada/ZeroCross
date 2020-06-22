@@ -22,6 +22,8 @@ mappings = {0: 'zero'}
 for i in used_rooms:
     mappings[i] = Board()
 
+mappings[3].set_board([[-1, 1, 0], [-1, 1, -1], [-1, -1, 0]])
+
 
 @app.route('/create_room/', methods=['GET'])
 def create_room():
@@ -67,8 +69,22 @@ def update(room_id):
     sign = request.json['Sign']
     mappings[room_id].update(row, col, sign)
     print("Updated Board at room id", room_id, " -> ", mappings[room_id].get_board())
-    return jsonify(request.json)
-    # return jsonify({mappings[i].get_board()})
+    result = mappings[room_id].check_state()
+    print("Game result: ", result)
+
+    # Player 1 winner
+    if result == 0:
+        return make_response(jsonify({'Winner': 0}), 0)
+    # Player 2 winner
+    if result == 1:
+        return make_response(jsonify({'Winner': 1}), 1)
+    # Game continues
+    if result == 2:
+        return make_response(jsonify({'Game State': 1}), 2)
+    # Tie case
+    if result == 3:
+        return make_response(jsonify({'Game State': 0}), 3)
+    return "Unknown error encountered"
 
 
 @app.route('/<int:room_id>/end_game',  methods=['DELETE'])
