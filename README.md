@@ -1,12 +1,12 @@
 # ZeroCross
 
-**Working-**
+**Working**
 
 a. *Room Creation-*
 
 Client sends a create_room() request to the server. Server searches for available room id and returns it or with Error code in case all rooms are full.
 
-b.*Game Playing-*
+b. *Game Playing-*
 
 Client sends start_game() request to server.
 
