@@ -18,7 +18,7 @@ class Board:
         print(self.arr)
 
     def update(self, row, col, sign):
-        if sign not in range(1):
+        if sign not in range(2):
             return 1
         if row in range(3) and col in range(3):
             self.arr[row][col] = sign
@@ -29,19 +29,19 @@ class Board:
     def check_state(self):
         #row check
         for i in range(3):
-            if self.arr[i][0] == self.arr[i][1] and self.arr[i][1] == self.arr[i][2]:
+            if self.arr[i][0] != -1 and self.arr[i][0] == self.arr[i][1] and self.arr[i][1] == self.arr[i][2]:
                 return self.arr[i][0]
 
         #col check
         for j in range(3):
-            if self.arr[0][j] == self.arr[1][j] and self.arr[1][j] == self.arr[2][j]:
+            if self.arr[0][j] != -1 and self.arr[0][j] == self.arr[1][j] and self.arr[1][j] == self.arr[2][j]:
                 return self.arr[0][j]
 
         #diag check
-        if self.arr[0][0] == self.arr[1][1] and self.arr[1][1] == self.arr[2][2]:
+        if self.arr[0][0] != -1 and self.arr[0][0] == self.arr[1][1] and self.arr[1][1] == self.arr[2][2]:
             return self.arr[0][0]
 
-        if self.arr[0][2] == self.arr[1][1] and self.arr[1][1] == self.arr[2][0]:
+        if self.arr[0][2] != -1 and self.arr[0][2] == self.arr[1][1] and self.arr[1][1] == self.arr[2][0]:
             return self.arr[2][0]
 
         game_flag = 0
