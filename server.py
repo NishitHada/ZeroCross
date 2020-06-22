@@ -22,7 +22,7 @@ mappings = {0: 'zero'}
 for i in used_rooms:
     mappings[i] = Board()
 
-mappings[3].set_board([[-1, 1, 0], [-1, 1, -1], [-1, -1, 0]])
+# mappings[3].set_board([[0, 1, 0], [1, -1, 0], [1, 0, -1]])
 
 
 @app.route('/create_room/', methods=['GET'])
@@ -80,10 +80,10 @@ def update(room_id):
         return make_response(jsonify({'Winner': 1}), 1)
     # Game continues
     if result == 2:
-        return make_response(jsonify({'Game State': 1}), 2)
+        return make_response(jsonify({'Game State': 1, 'Description': 'Game will continue'}), 2)
     # Tie case
     if result == 3:
-        return make_response(jsonify({'Game State': 0}), 3)
+        return make_response(jsonify({'Game State': 0, 'Description': 'Game has tied'}), 3)
     return "Unknown error encountered"
 
 
@@ -94,6 +94,13 @@ def end_game(room_id):
         return make_response(jsonify({'Error': 'Room not found'}), 404)
     used_rooms.remove(room_id)
     # mappings[i].__del__()
+
+@app.route('/<int:room_id>/replay', methods=['PUT'])
+def replay(room_id):
+    if room_id not in used_rooms:
+        return make_response(jsonify({'Error': 'Room not found'}), 404)
+    mappings[room_id] = Board()
+    return "Board reset"
 
 
 
