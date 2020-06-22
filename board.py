@@ -2,6 +2,9 @@ class Board:
     def __init__(self):
         self.arr = [[-1 for i in range(3)] for j in range(3)]
 
+    def __del__(self):
+        print("Destructor called, Object deleted")
+
     def set_board(self, state):
         self.arr = [[-1 for i in range(3)] for j in range(3)]
         for i in range(0, 3):
