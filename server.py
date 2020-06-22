@@ -71,5 +71,15 @@ def update(room_id):
     # return jsonify({mappings[i].get_board()})
 
 
+@app.route('/<int:room_id>/end_game',  methods=['DELETE'])
+def end_game(room_id):
+    print(room_id)
+    if room_id not in used_rooms:
+        return make_response(jsonify({'Error': 'Room not found'}), 404)
+    used_rooms.remove(room_id)
+    # mappings[i].__del__()
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)
