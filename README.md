@@ -4,17 +4,17 @@
 
 a. *Room Creation-*
 
-Client sends a create_room() request to the server. Server searches for available room id and returns it or with Error code in case all rooms are full.
+Player1 sends a create_room() request to the server. Server searches for available room id and returns it or Error code in case all rooms are full.
 
 b. *Game Playing-*
 
-Client sends start_game() request to server.
+Player1 sends start_game() request to server.
 
-Player makes a move, client sends an update() request to server
-. 
-Server updates the board config, and executes check_status(). If it returns 0/1 then p1/p2 has won the game, if it returns 2, then game will continue and if it returns 3 then game has ended in a tie.
+A Player makes a move, thereby sending an update() request to server.
 
-If game ends, there can be a new game on the same room id, else the room id is flagged as unused and end_game() api can be called.
+Server updates the board config, and executes check_status(). If it returns 0/1 then p1/p2 has won the game, if it returns 3 then game has ended in a tie. If it returns 2, the game will continue and board config is refreshed for both players.
+
+If game ends, there can be a new game on the same room id, or end_game() api can be called.
 
 c. *Quit Game-* 
 Call end_game api.
@@ -23,7 +23,7 @@ d. *Replay Game-*
 Call replay api, effectively resetting the board.
 
 **NOTE-** 
-Only Player 1, who has created the room.
+Only Player 1, who has created the room, can choose between Quit Game and Replay Game.
 
 
 
