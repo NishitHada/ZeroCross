@@ -22,7 +22,23 @@ mappings = {0: 'zero'}
 for i in used_rooms:
     mappings[i] = Board()
 
-# mappings[3].set_board([[0, 1, 0], [1, -1, 0], [1, 0, -1]])
+mappings[3].set_board([[0, 1, 0], [1, -1, 0], [1, 0, -1]])
+
+
+@app.route('/available_rooms/', methods=['GET'])
+def available_rooms():
+    # return "PRINT LIST OF AVAILABLE ROOMS"
+    available = []
+    for i in range(0, 11):
+        if i not in used_rooms:
+            available.append(i)
+    print(available)
+    return jsonify({'Available Room List:': json.dumps(available)})
+
+
+@app.route('/used_rooms_list/', methods=['GET'])
+def used_rooms_list():
+    return make_response(jsonify({'Used Room List': json.dumps(list(used_rooms))}), 400)
 
 
 @app.route('/create_room/', methods=['GET'])
@@ -40,20 +56,13 @@ def create_room():
     return make_response(jsonify({'Error': 'No room available'}), 400)
 
 
-@app.route('/available_rooms/', methods=['GET'])
-def available_rooms():
-    # return "PRINT LIST OF AVAILABLE ROOMS"
-    available = []
-    for i in range(0, 11):
-        if i not in used_rooms:
-            available.append(i)
-    print(available)
-    return jsonify({'Available Room List:': json.dumps(available)})
-
-
-@app.route('/used_rooms_list/', methods=['GET'])
-def used_rooms_list():
-    return make_response(jsonify({'Used Room List': json.dumps(list(used_rooms))}), 400)
+@app.route('/<int:room_id>/join_room', methods=['GET'])
+def join_room(room_id):
+    print(room_id)
+    if room_id not in used_rooms:
+        return make_response(jsonify({'Error': 'Room not found'}), 404)
+    game_status = mappings[room_id].get_board()
+    return json.dumps(game_status)
 
 
 @app.route('/<int:room_id>/update', methods=['PUT'])
@@ -80,19 +89,30 @@ def update(room_id):
         return make_response(jsonify({'Winner': 1}), 1)
     # Game continues
     if result == 2:
-        return make_response(jsonify({'Game State': 1, 'Description': 'Game will continue'}), 2)
+        game_status = mappings[room_id] .get_board()
+        return make_response(jsonify({'Game State': 1, 'Game Status': game_status,'Description': 'Game will continue'}), 2)
     # Tie case
     if result == 3:
-        return make_response(jsonify({'Game State': 0, 'Description': 'Game has tied'}), 3)
+        return make_response(jsonify({'Game State': 0, 'Description': 'Game has ended in a tie'}), 3)
     return "Unknown error encountered"
 
 
-@app.route('/<int:room_id>/end_game',  methods=['DELETE'])
+@app.route('/<int:room_id>/game_status', methods=['GET'])
+def get_game_status(room_id):
+    print(room_id)
+    if room_id not in used_rooms:
+        return make_response(jsonify({'Error': 'Room not found'}), 404)
+    game_status = mappings[room_id].get_board()
+    return json.dumps(game_status)
+
+
+@app.route('/<int:room_id>/end_game',  methods=['GET'])
 def end_game(room_id):
     print(room_id)
     if room_id not in used_rooms:
         return make_response(jsonify({'Error': 'Room not found'}), 404)
     used_rooms.remove(room_id)
+    return 'Room Deleted'
     # mappings[i].__del__()
 
 @app.route('/<int:room_id>/replay', methods=['PUT'])
